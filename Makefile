@@ -49,6 +49,14 @@ build: build-dirs
 	    -ldflags "-X main.version=${VERSION}" \
 	    ./cmd/oci-cloud-controller-manager
 
+.PHONY: image
+image: build
+	docker build --force-rm -t wcr.io/oke-public/baldwin:ccm-with-hacked-tcp-options .
+
+.PHONY: image-push
+image-push: image
+	docker push wcr.io/oke-public/baldwin:ccm-with-hacked-tcp-options
+
 .PHONY: manifests
 manifests: build-dirs
 	@cp -a manifests/* dist
